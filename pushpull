@@ -1,0 +1,20 @@
+#!/bin/bash
+
+red='\e[0;31m'
+NC='\e[0m' # No Color
+
+echo " "
+echo -e "${red}============Waffles PUSH/PULL with RSYNC to the server script============${NC}"
+echo "This will either push or pull to the ocala.liberumvir.com domain using user deploy. Local files must be in ~/websites/ocala.liberumvir.com and will be synced with /srv/www/ocala.liberumvir.com/public_html."
+echo " "
+echo "Pushing or pulling? (push or pull)"
+
+read PUSHPULL
+if [ ${PUSHPULL,,} = "push" ]; then
+	rsync -a -v ~/websites/ocala.liberumvir.com/ deploy@ocala.liberumvir.com:/srv/www/ocala.liberumvir.com/public_html
+elif [ ${PUSHPULL,,} = "pull" ]; then
+	rsync -a -v -e ssh deploy@ocala.liberumvir.com:/srv/www/ocala.liberumvir.com/public_html/ ~/websites/ocala.liberumvir.com
+else echo "I don't understand command $PUSHPULL so I'm not going to do anything."
+fi
+echo " "
+echo "If you did not see an error it should be all good!"
